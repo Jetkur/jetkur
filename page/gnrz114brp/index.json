@@ -1,0 +1,34 @@
+{
+  "name": {
+    "tr": "Bildirimler"
+  },
+  "status": "play",
+  "category": "",
+  "id": "gnrz114brp",
+  "url": "",
+  "path": "bildirimler",
+  "keyword": {
+    "tr": ""
+  },
+  "description": {
+    "tr": ""
+  },
+  "text": {
+    "tr": ""
+  },
+  "spot": {
+    "tr": ""
+  },
+  "desc": {},
+  "index": 3,
+  "icon": "notifications",
+  "desing": {
+    "header": [],
+    "body": [
+      "dw4wvd"
+    ],
+    "footer": []
+  },
+  "update": "2025-07-20T10:55:33.170Z",
+  "date": "2025-07-01T12:50:30.161Z"
+}

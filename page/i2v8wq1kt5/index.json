@@ -1,0 +1,39 @@
+{
+  "name": {
+    "tr": "Login",
+    "en": "",
+    "ar": "",
+    "de": "",
+    "ru": ""
+  },
+  "status": "play",
+  "category": "user",
+  "id": "i2v8wq1kt5",
+  "url": "",
+  "path": "login",
+  "index": 4,
+  "icon": "home",
+  "desing": {
+    "header": [],
+    "body": [
+      "qqzbx2"
+    ],
+    "footer": []
+  },
+  "pathnext": "",
+  "desc": {},
+  "description": {
+    "tr": ""
+  },
+  "keyword": {
+    "tr": ""
+  },
+  "text": {
+    "tr": ""
+  },
+  "spot": {
+    "tr": ""
+  },
+  "update": "2025-07-20T10:55:33.249Z",
+  "date": "2025-07-01T12:00:35.007Z"
+}
