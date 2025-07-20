@@ -1,0 +1,34 @@
+{
+  "name": {
+    "tr": "İade ve Değişim"
+  },
+  "status": "play",
+  "category": "",
+  "id": "kseilkrnu2",
+  "url": "",
+  "path": "iadevedegisim",
+  "keyword": {
+    "tr": ""
+  },
+  "description": {
+    "tr": ""
+  },
+  "text": {
+    "tr": ""
+  },
+  "spot": {
+    "tr": ""
+  },
+  "desc": {},
+  "index": 9,
+  "icon": "swap_horiz",
+  "desing": {
+    "header": [],
+    "body": [
+      "a030h0"
+    ],
+    "footer": []
+  },
+  "update": "2025-07-20T10:55:33.205Z",
+  "date": "2025-07-01T12:50:30.181Z"
+}

@@ -1,0 +1,38 @@
+{
+  "name": {
+    "tr": "Sepet",
+    "en": "",
+    "ar": "",
+    "de": "",
+    "ru": ""
+  },
+  "status": "play",
+  "category": "",
+  "id": "o00f90tsg0",
+  "url": "",
+  "path": "basket",
+  "index": 2,
+  "icon": "home",
+  "desing": {
+    "header": [],
+    "body": [
+      "q2e7jq"
+    ],
+    "footer": []
+  },
+  "pathnext": "",
+  "description": {
+    "tr": ""
+  },
+  "keyword": {
+    "tr": ""
+  },
+  "text": {
+    "tr": ""
+  },
+  "spot": {
+    "tr": ""
+  },
+  "update": "2025-07-20T10:55:33.245Z",
+  "date": "2025-07-01T02:59:12.828Z"
+}
