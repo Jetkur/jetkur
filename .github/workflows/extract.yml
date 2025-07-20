@@ -1,0 +1,72 @@
+name: Extract Project
+on:
+  workflow_dispatch:
+    inputs:
+      zip_file:
+        description: 'Zip file name to extract'
+        required: true
+        default: 'project.zip'
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract zip into current directory
+        run: |
+          ZIP_FILE="${{ github.event.inputs.zip_file }}"
+
+          # Zip dosyasının varlığını kontrol et
+          if [ ! -f "$ZIP_FILE" ]; then
+            # Tüm zip dosyalarını listele
+            echo "Available zip files:"
+            ls -la *.zip 2>/dev/null || echo "No zip files found"
+
+            # En son zip dosyasını bul
+            ZIP_FILE=$(ls -t *.zip 2>/dev/null | head -n1)
+            if [ -z "$ZIP_FILE" ]; then
+              echo "No zip file found!"
+              exit 1
+            fi
+            echo "Using: $ZIP_FILE"
+          fi
+
+          # Geçici klasör oluştur
+          mkdir temp_extract
+
+          # Zip'i geçici klasöre aç
+          unzip "$ZIP_FILE" -d temp_extract
+
+          # Zip içeriğini ana dizine taşı
+          if [ -d "temp_extract" ]; then
+            # Eğer zip içinde tek klasör varsa, onun içeriğini al
+            if [ $(ls temp_extract | wc -l) -eq 1 ] && [ -d "temp_extract/$(ls temp_extract)" ]; then
+              mv temp_extract/$(ls temp_extract)/* . 2>/dev/null || true
+              mv temp_extract/$(ls temp_extract)/.[^.]* . 2>/dev/null || true
+            else
+              # Yoksa tüm içeriği doğrudan al
+              mv temp_extract/* . 2>/dev/null || true
+              mv temp_extract/.[^.]* . 2>/dev/null || true
+            fi
+          fi
+
+          # Temizlik
+          rm -rf temp_extract "$ZIP_FILE"
+
+      - name: Commit extracted files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Proje dosyaları mevcut dizine çıkarıldı" || exit 0
+          git push
