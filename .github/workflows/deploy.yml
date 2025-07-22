@@ -1,0 +1,86 @@
+name: Clean and Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      zip_file:
+        description: 'Zip file to extract'
+        required: true
+        default: 'project.zip'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clean repository (keep README.md and CNAME)
+        run: |
+          echo "🧹 Repository temizleniyor..."
+
+          # README.md ve CNAME hariç tüm dosyaları sil
+          find . -maxdepth 1 -type f ! -name 'README.md' ! -name 'CNAME' ! -name '.gitignore' ! -path './.git*' -delete
+
+          # Boş olmayan klasörleri sil (git klasörü hariç)
+          for dir in */; do
+            if [ "$dir" != ".git/" ] && [ "$dir" != ".github/" ]; then
+              echo "🗑️ Klasör siliniyor: $dir"
+              rm -rf "$dir"
+            fi
+          done
+
+          echo "✅ Repository temizlendi"
+
+      - name: Extract project files
+        run: |
+          ZIP_FILE="${{ github.event.inputs.zip_file }}"
+          echo "📦 Zip dosyası çıkarılıyor: $ZIP_FILE"
+
+          # Zip dosyasının varlığını kontrol et
+          if [ ! -f "$ZIP_FILE" ]; then
+            echo "❌ Zip dosyası bulunamadı: $ZIP_FILE"
+
+            # Mevcut zip dosyalarını listele
+            echo "📋 Mevcut dosyalar:"
+            ls -la *.zip 2>/dev/null || echo "Zip dosyası bulunamadı"
+
+            # En yeni zip dosyasını bul
+            ZIP_FILE=$(ls -t *.zip 2>/dev/null | head -n1)
+            if [ -z "$ZIP_FILE" ]; then
+              echo "❌ Hiç zip dosyası bulunamadı!"
+              exit 1
+            fi
+            echo "✅ Kullanılacak zip: $ZIP_FILE"
+          fi
+
+          # Zip'i çıkar
+          echo "📂 Zip içeriği çıkarılıyor..."
+          unzip -q "$ZIP_FILE" || {
+            echo "❌ Zip çıkarma hatası"
+            exit 1
+          }
+
+          # Zip dosyasını sil
+          rm "$ZIP_FILE"
+          echo "✅ Zip dosyası silindi: $ZIP_FILE"
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Değişiklikleri ekle
+          git add .
+
+          # Commit yap (değişiklik varsa)
+          if git diff --staged --quiet; then
+            echo "📝 Değişiklik yok, commit atlandı"
+          else
+            git commit -m "🚀 Proje dosyaları güncellendi"
+            git push
+            echo "✅ Değişiklikler push edildi"
+          fi
